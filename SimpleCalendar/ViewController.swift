@@ -8,6 +8,23 @@
 
 import UIKit
 
+class SelectedView: UIView {
+    
+    override func draw(_ rect: CGRect) {
+        guard let context = UIGraphicsGetCurrentContext() else {
+            return
+        }
+        context.setFillColor(UIColor.orange.cgColor)
+        context.fillEllipse(in: rect)
+    }
+}
+
+protocol ViewControllerDelegate {
+    func viewWillDismiss(_ viewController: UIViewController)
+    func viewWillDismissAtSave(_ viewController: UIViewController)
+    func viewWillDismissAtDelete(_ viewController: UIViewController)
+}
+
 class ViewController: UIViewController {
     
     @IBOutlet weak var topView: UIView!
@@ -19,14 +36,16 @@ class ViewController: UIViewController {
     fileprivate let dateManager = CalendarDateManager()
     fileprivate let daysPerWeek: Int = 7
     fileprivate let margin: CGFloat = 2.0
-    fileprivate var selectedDate = Date()
-    fileprivate var today: NSDate!
+    fileprivate var selectedIndex: IndexPath!
+    fileprivate var selectedDate: Date!
+    fileprivate var today = Date()
     fileprivate let weekly = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        setCalendarTitle(from: selectedDate)
+        setCalendarTitle(from: today)
+        selectedDate = today
     }
     
     override func didReceiveMemoryWarning() {
@@ -36,7 +55,7 @@ class ViewController: UIViewController {
     
     func setCalendarTitle(from date: Date) {
         let formatter: DateFormatter = DateFormatter()
-        formatter.dateFormat = "yyyy年M月"
+        formatter.dateFormat = "yyyy/M/"
         let selectMonth = formatter.string(from: date)
         calendarTitle.text = selectMonth
     }
@@ -52,13 +71,61 @@ class ViewController: UIViewController {
         collectionView.reloadData()
         setCalendarTitle(from: selectedDate)
     }
+
+}
+
+extension ViewController: ViewControllerDelegate {
+
+    func viewWillDismissAtSave(_ viewController: UIViewController) {
+        collectionView.deselectItem(at: selectedIndex, animated: false)
+        let selectedCell = collectionView.cellForItem(at: selectedIndex)
+        selectedCell?.backgroundColor = UIColor.clear
+        var frame = selectedCell?.frame
+        frame?.size.height /= 4
+        frame?.size.width = (frame?.size.height)!
+        frame?.origin.y = (frame?.size.height)! * 3
+        frame?.origin.x = ((selectedCell?.frame.size.width)! - (frame?.size.width)!)/2
+
+        let selectedView = SelectedView(frame: frame!)
+        selectedView.backgroundColor = UIColor.clear
+        selectedCell?.contentView.addSubview(selectedView)
+    }
+
+    func viewWillDismissAtDelete(_ viewController: UIViewController) {
+        collectionView.deselectItem(at: selectedIndex, animated: false)
+        let selectedCell = collectionView.cellForItem(at: selectedIndex)
+        selectedCell?.backgroundColor = UIColor.clear
+        for subview in (selectedCell?.contentView.subviews)! {
+            subview.removeFromSuperview()
+        }
+    }
+
+    func viewWillDismiss(_ viewController: UIViewController) {
+        collectionView.deselectItem(at: selectedIndex, animated: false)
+        let selectedCell = collectionView.cellForItem(at: selectedIndex)
+        selectedCell?.backgroundColor = UIColor.clear
+    }
 }
 
 extension ViewController: UICollectionViewDelegate {
 
     @available(iOS 6.0, *)
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        selectedIndex = indexPath
+        let selectedCell = collectionView.cellForItem(at: indexPath)
+        selectedCell?.backgroundColor = UIColor.yellow.withAlphaComponent(0.6)
+
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "MemoViewController")
+
+        let dateString = calendarTitle.text! + (selectedCell as! CalendarViewCell).dateLabel.text!
+        let formatter: DateFormatter = DateFormatter()
+        formatter.dateFormat = "yyyy/M/dd"
+        selectedDate = formatter.date(from: dateString)!
+        (vc as! MemoViewController).selectedDate = selectedDate
+        (vc as! MemoViewController).delegate = self
+
+        present(vc, animated: true, completion: nil)
     }
     
 }
@@ -86,7 +153,6 @@ extension ViewController: UICollectionViewDataSource {
         } else {
             cell.dateLabel.textColor = UIColor.gray
         }
-        //テキスト配置
         if indexPath.section == 0 {
             cell.dateLabel.text = weekly[indexPath.row]
         } else {

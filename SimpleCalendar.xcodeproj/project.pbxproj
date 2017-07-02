@@ -15,6 +15,7 @@
 		C24840EE1F036CC00026B164 /* SimpleCalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24840ED1F036CC00026B164 /* SimpleCalendarTests.swift */; };
 		C24840F91F036D1C0026B164 /* CalendarViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24840F81F036D1C0026B164 /* CalendarViewCell.swift */; };
 		C24840FB1F036D400026B164 /* CalendarDateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24840FA1F036D400026B164 /* CalendarDateManager.swift */; };
+		C24840FF1F0611F90026B164 /* MemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24840FE1F0611F90026B164 /* MemoViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,7 @@
 		C24840EF1F036CC00026B164 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C24840F81F036D1C0026B164 /* CalendarViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewCell.swift; sourceTree = "<group>"; };
 		C24840FA1F036D400026B164 /* CalendarDateManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarDateManager.swift; sourceTree = "<group>"; };
+		C24840FE1F0611F90026B164 /* MemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 				C24840E41F036CC00026B164 /* Info.plist */,
 				C24840F81F036D1C0026B164 /* CalendarViewCell.swift */,
 				C24840FA1F036D400026B164 /* CalendarDateManager.swift */,
+				C24840FE1F0611F90026B164 /* MemoViewController.swift */,
 			);
 			path = SimpleCalendar;
 			sourceTree = "<group>";
@@ -209,6 +212,7 @@
 			files = (
 				C24840F91F036D1C0026B164 /* CalendarViewCell.swift in Sources */,
 				C24840DB1F036CC00026B164 /* ViewController.swift in Sources */,
+				C24840FF1F0611F90026B164 /* MemoViewController.swift in Sources */,
 				C24840D91F036CC00026B164 /* AppDelegate.swift in Sources */,
 				C24840FB1F036D400026B164 /* CalendarDateManager.swift in Sources */,
 			);
@@ -418,6 +422,7 @@
 				C24840F41F036CC00026B164 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C24840F51F036CC00026B164 /* Build configuration list for PBXNativeTarget "SimpleCalendarTests" */ = {
 			isa = XCConfigurationList;
@@ -426,6 +431,7 @@
 				C24840F71F036CC00026B164 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
