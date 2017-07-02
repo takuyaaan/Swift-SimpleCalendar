@@ -2,8 +2,8 @@
 //  SimpleCalendarTests.swift
 //  SimpleCalendarTests
 //
-//  Created by TakuyaMano on 2017/06/28.
-//  Copyright © 2017年 TakuyaMano. All rights reserved.
+//  Created by Takuyaaan on 2017/06/28.
+//  Copyright © 2017年 Takuyaaan. All rights reserved.
 //
 
 import XCTest

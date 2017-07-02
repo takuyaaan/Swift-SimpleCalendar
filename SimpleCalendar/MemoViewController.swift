@@ -2,8 +2,8 @@
 //  MemoViewController.swift
 //  SimpleCalendar
 //
-//  Created by TakuyaMano on 2017/06/30.
-//  Copyright © 2017年 TakuyaMano. All rights reserved.
+//  Created by Takuyaaan on 2017/06/30.
+//  Copyright © 2017年 Takuyaaan. All rights reserved.
 //
 
 import UIKit
