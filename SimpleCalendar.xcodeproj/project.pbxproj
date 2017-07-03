@@ -20,11 +20,6 @@
 		C24840FF1F0611F90026B164 /* MemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24840FE1F0611F90026B164 /* MemoViewController.swift */; };
 		C24841091F09445E0026B164 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24841081F09445E0026B164 /* RealmManager.swift */; };
 		C248410E1F0A5AB60026B164 /* CalendarDateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24840FA1F036D400026B164 /* CalendarDateManager.swift */; };
-		C248410F1F0A5ABB0026B164 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24841081F09445E0026B164 /* RealmManager.swift */; };
-		C24841111F0A5AC10026B164 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24840DA1F036CC00026B164 /* ViewController.swift */; };
-		C24841121F0A5AC40026B164 /* MemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24840FE1F0611F90026B164 /* MemoViewController.swift */; };
-		C24841131F0A5AD50026B164 /* CalendarViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24840F81F036D1C0026B164 /* CalendarViewCell.swift */; };
-		C24841141F0A61E50026B164 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24840D81F036CC00026B164 /* AppDelegate.swift */; };
 		C24841171F0A67480026B164 /* RLMCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C248410A1F0946D10026B164 /* RLMCalendar.swift */; };
 /* End PBXBuildFile section */
 
@@ -393,13 +388,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C24841141F0A61E50026B164 /* AppDelegate.swift in Sources */,
-				C24841111F0A5AC10026B164 /* ViewController.swift in Sources */,
 				C24840EE1F036CC00026B164 /* SimpleCalendarTests.swift in Sources */,
-				C24841121F0A5AC40026B164 /* MemoViewController.swift in Sources */,
-				C24841131F0A5AD50026B164 /* CalendarViewCell.swift in Sources */,
 				C248410E1F0A5AB60026B164 /* CalendarDateManager.swift in Sources */,
-				C248410F1F0A5ABB0026B164 /* RealmManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,7 +448,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -508,7 +498,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

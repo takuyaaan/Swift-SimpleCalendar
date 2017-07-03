@@ -175,7 +175,7 @@ extension ViewController: UICollectionViewDataSource {
                 formatter.dateFormat = "yyyy.M.d"
                 let checkDate = formatter.date(from: checkDateString)!
                 formatter.dateFormat = "yyyy-MM-dd"
-                if RealmManager.sharedInstance.isSaveAt(date: formatter.string(from: checkDate)) {
+                if RealmManager().isSaveAt(date: formatter.string(from: checkDate)) {
                     createSelectedView(cell)
                 }
             }

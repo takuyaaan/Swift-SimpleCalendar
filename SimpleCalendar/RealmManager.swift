@@ -13,13 +13,14 @@ import SwiftyJSON
 class RealmManager {
 
     fileprivate final let realmVersion = 0
-    var realmConfig: Realm.Configuration
+    var realmConfig = Realm.Configuration.defaultConfiguration
     var realm: Realm!
     
-    static let sharedInstance = RealmManager()
-    private init() {
-        
-        realmConfig = Realm.Configuration.defaultConfiguration
+    init(defaultRealm: Realm) {
+        self.realm = defaultRealm
+    }
+
+    init() {
         realmMigration(version: UInt64(realmVersion))
         
         Realm.Configuration.defaultConfiguration = realmConfig
@@ -62,10 +63,11 @@ class RealmManager {
         guard subObject.count > 0 else {
             return ""
         }
+        var memoString = ""
         subObject.forEach{(sub) in
-            return sub.memoText
+            memoString = sub.memoText
         }
-        return ""
+        return memoString
     }
 
     func insertDate(date: String, memo: String) {

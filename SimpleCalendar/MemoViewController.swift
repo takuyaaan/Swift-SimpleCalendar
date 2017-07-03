@@ -37,7 +37,7 @@ class MemoViewController: UIViewController {
 
         formatter.dateFormat = "yyyy-MM-dd"
         let dateString = formatter.string(from: currentDate)
-        textView.text = RealmManager.sharedInstance.memoAt(date: dateString)
+        textView.text = RealmManager().memoAt(date: dateString)
     }
 
     override func didReceiveMemoryWarning() {
@@ -66,7 +66,7 @@ class MemoViewController: UIViewController {
         let formatter: DateFormatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         let dateString = formatter.string(from: currentDate)
-        RealmManager.sharedInstance.insertDate(date: dateString, memo: textView.text)
+        RealmManager().insertDate(date: dateString, memo: string!)
         dismiss(animated: true, completion: nil)
     }
 }
