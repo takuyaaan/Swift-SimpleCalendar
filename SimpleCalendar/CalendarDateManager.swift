@@ -14,20 +14,13 @@ class CalendarDateManager {
     var selectedDate = Date()
     fileprivate let daysPerWeek: Int = 7
     
-    func daysCalculation() -> Int {
-        
-        let rangeWeeks = NSCalendar.current.range(of: .weekOfMonth, in: .month, for: firstDateOfMonth())
-        let numberOfWeeks = rangeWeeks?.count
-        return numberOfWeeks! * daysPerWeek
-    }
-    
-    func firstDateOfMonth() -> Date {
+    fileprivate func firstDateOfMonth() -> Date {
         var components = NSCalendar.current.dateComponents([.year, .month, .day], from: selectedDate as Date)
         components.day = 1
         return NSCalendar.current.date(from: components)!
     }
     
-    func dateForCellAtIndexPath(_ numberOfItems: Int) {
+    fileprivate func dateForCellAtIndexPath(_ numberOfItems: Int) {
         let ordinalityOfFirstDay = NSCalendar.current.ordinality(of: .day, in: .weekOfMonth, for: firstDateOfMonth())
         let numberOfItems = daysCalculation()
         for ii in 0..<numberOfItems {
@@ -36,6 +29,20 @@ class CalendarDateManager {
             let date = NSCalendar.current.date(byAdding: dateComponents, to: firstDateOfMonth())
             currentMonthOfDates.append(date!)
         }
+    }
+    
+    fileprivate func monthCalculation(addValue: Int, from date: Date) -> Date {
+        let calendar = NSCalendar.current
+        var dateComponents = DateComponents()
+        dateComponents.month = addValue
+        return calendar.date(byAdding: dateComponents, to: date)!
+    }
+    
+    func daysCalculation() -> Int {
+        
+        let rangeWeeks = NSCalendar.current.range(of: .weekOfMonth, in: .month, for: firstDateOfMonth())
+        let numberOfWeeks = rangeWeeks?.count
+        return numberOfWeeks! * daysPerWeek
     }
     
     func conversionFormat(_ indexPath: IndexPath) -> String {
@@ -73,13 +80,6 @@ class CalendarDateManager {
         selectedDate = monthCalculation(addValue: 1, from: date)
         dateForCellAtIndexPath(daysCalculation())
         return selectedDate
-    }
-    
-    func monthCalculation(addValue: Int, from date: Date) -> Date {
-        let calendar = NSCalendar.current
-        var dateComponents = DateComponents()
-        dateComponents.month = addValue
-        return calendar.date(byAdding: dateComponents, to: date)!
     }
     
 }

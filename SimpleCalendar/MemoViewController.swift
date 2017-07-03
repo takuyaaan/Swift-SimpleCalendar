@@ -29,11 +29,15 @@ class MemoViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         let formatter: DateFormatter = DateFormatter()
-        formatter.dateFormat = "yyyy/MM/dd"
+        formatter.dateFormat = "yyyy.MM.dd"
         let displak = formatter.string(from: currentDate)
         titleLabel.text = displak
         textView.layer.borderWidth = 1.0
         textView.layer.borderColor = UIColor.darkGray.withAlphaComponent(0.7).cgColor
+
+        formatter.dateFormat = "yyyy-MM-dd"
+        let dateString = formatter.string(from: currentDate)
+        textView.text = RealmManager.sharedInstance.memoAt(date: dateString)
     }
 
     override func didReceiveMemoryWarning() {
@@ -48,13 +52,21 @@ class MemoViewController: UIViewController {
 
     @IBAction func actionDelete(_ sender: UIButton) {
         delegate?.viewWillDismissAtDelete(self)
-        //TODO: delete
+
+        let formatter: DateFormatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let dateString = formatter.string(from: currentDate)
+        RealmManager.sharedInstance.deleteDate(date: dateString)
         dismiss(animated: true, completion: nil)
     }
 
     @IBAction func actionSave(_ sender: UIButton) {
         delegate?.viewWillDismissAtSave(self)
-        //TODO: delete
+        
+        let formatter: DateFormatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let dateString = formatter.string(from: currentDate)
+        RealmManager.sharedInstance.insertDate(date: dateString, memo: textView.text)
         dismiss(animated: true, completion: nil)
     }
 }

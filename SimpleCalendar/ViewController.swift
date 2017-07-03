@@ -34,12 +34,12 @@ class ViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     
     fileprivate let dateManager = CalendarDateManager()
-    fileprivate let daysPerWeek: Int = 7
+    fileprivate let daysPerWeek: Int = NSCalendar.current.shortStandaloneWeekdaySymbols.count
     fileprivate let margin: CGFloat = 2.0
     fileprivate var selectedIndex: IndexPath!
     fileprivate var selectedDate: Date!
     fileprivate var today = Date()
-    fileprivate let weekly = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+    fileprivate let weekly = NSCalendar.current.shortStandaloneWeekdaySymbols
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,11 +53,23 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func setCalendarTitle(from date: Date) {
+    fileprivate func setCalendarTitle(from date: Date) {
         let formatter: DateFormatter = DateFormatter()
-        formatter.dateFormat = "yyyy/M/"
+        formatter.dateFormat = "yyyy.M"
         let selectMonth = formatter.string(from: date)
         calendarTitle.text = selectMonth
+    }
+
+    fileprivate func createSelectedView(_ cell: UICollectionViewCell) {
+        var frame = cell.frame
+        frame.size.height /= 4
+        frame.size.width = frame.size.height
+        frame.origin.y = frame.size.height * 3
+        frame.origin.x = (cell.frame.size.width - frame.size.width)/2
+        
+        let selectedView = SelectedView(frame: frame)
+        selectedView.backgroundColor = UIColor.clear
+        cell.contentView.addSubview(selectedView)
     }
     
     @IBAction func touchPrev(_ sender: UIButton) {
@@ -80,15 +92,7 @@ extension ViewController: ViewControllerDelegate {
         collectionView.deselectItem(at: selectedIndex, animated: false)
         let selectedCell = collectionView.cellForItem(at: selectedIndex)
         selectedCell?.backgroundColor = UIColor.clear
-        var frame = selectedCell?.frame
-        frame?.size.height /= 4
-        frame?.size.width = (frame?.size.height)!
-        frame?.origin.y = (frame?.size.height)! * 3
-        frame?.origin.x = ((selectedCell?.frame.size.width)! - (frame?.size.width)!)/2
-
-        let selectedView = SelectedView(frame: frame!)
-        selectedView.backgroundColor = UIColor.clear
-        selectedCell?.contentView.addSubview(selectedView)
+        createSelectedView(selectedCell!)
     }
 
     func viewWillDismissAtDelete(_ viewController: UIViewController) {
@@ -118,9 +122,9 @@ extension ViewController: UICollectionViewDelegate {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "MemoViewController")
 
-        let dateString = calendarTitle.text! + (selectedCell as! CalendarViewCell).dateLabel.text!
+        let dateString = calendarTitle.text! + "." + (selectedCell as! CalendarViewCell).dateLabel.text!
         let formatter: DateFormatter = DateFormatter()
-        formatter.dateFormat = "yyyy/M/dd"
+        formatter.dateFormat = "yyyy.M.dd"
         selectedDate = formatter.date(from: dateString)!
         (vc as! MemoViewController).selectedDate = selectedDate
         (vc as! MemoViewController).delegate = self
@@ -145,6 +149,9 @@ extension ViewController: UICollectionViewDataSource {
     @available(iOS 6.0, *)
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CalendarViewCell
+        cell.contentView.subviews.forEach{(sub) in
+            sub.removeFromSuperview()
+        }
         
         if (indexPath.row % daysPerWeek == 0) {
             cell.dateLabel.textColor = UIColor.red
@@ -156,10 +163,21 @@ extension ViewController: UICollectionViewDataSource {
         if indexPath.section == 0 {
             cell.dateLabel.text = weekly[indexPath.row]
         } else {
-            cell.dateLabel.text = dateManager.conversionFormat(indexPath)
+            let day = dateManager.conversionFormat(indexPath)
+            cell.dateLabel.text = day
             if !dateManager.isCurrentMonth(indexPath) {
                 cell.isUserInteractionEnabled = false
                 cell.dateLabel.textColor = UIColor.lightGray
+            }
+            else {
+                let checkDateString = calendarTitle.text! + "." + day
+                let formatter: DateFormatter = DateFormatter()
+                formatter.dateFormat = "yyyy.M.d"
+                let checkDate = formatter.date(from: checkDateString)!
+                formatter.dateFormat = "yyyy-MM-dd"
+                if RealmManager.sharedInstance.isSaveAt(date: formatter.string(from: checkDate)) {
+                    createSelectedView(cell)
+                }
             }
         }
         return cell
