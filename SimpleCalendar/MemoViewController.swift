@@ -51,16 +51,41 @@ class MemoViewController: UIViewController {
     }
 
     @IBAction func actionDelete(_ sender: UIButton) {
-        delegate?.viewWillDismissAtDelete(self)
-
-        let formatter: DateFormatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        let dateString = formatter.string(from: currentDate)
-        RealmManager.sharedInstance.deleteDate(date: dateString)
-        dismiss(animated: true, completion: nil)
+        let alert = UIAlertController(title: "Comfirm", message: "May I delete?", preferredStyle: .alert)
+        let actionHandler = { (action: UIAlertAction) in
+            self.delegate?.viewWillDismissAtDelete(self)
+            
+            let formatter: DateFormatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            let dateString = formatter.string(from: self.currentDate)
+            RealmManager().deleteDate(date: dateString)
+            self.dismiss(animated: true, completion: nil)
+            return
+        }
+        let action = UIAlertAction(title: "OK", style: .default, handler: actionHandler)
+        let action2 = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+        alert.addAction(action)
+        alert.addAction(action2)
+        self.present(alert, animated: true, completion: nil)
+        return
     }
 
     @IBAction func actionSave(_ sender: UIButton) {
+        let string = textView.text
+        guard (string?.characters.count)! > 0 else {
+            let alert = UIAlertController(title: "Comfirm", message: "Not yet entered.", preferredStyle: .alert)
+            let actionHandler = { (action: UIAlertAction) in
+                self.delegate?.viewWillDismiss(self)
+                self.dismiss(animated: true, completion: nil)
+                return
+            }
+            let action = UIAlertAction(title: "OK", style: .default, handler: actionHandler)
+            alert.addAction(action)
+            let action2 = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+            alert.addAction(action2)
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
         delegate?.viewWillDismissAtSave(self)
         
         let formatter: DateFormatter = DateFormatter()
